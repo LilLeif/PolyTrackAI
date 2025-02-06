@@ -13,12 +13,14 @@ class KeyListener:
         self.listener.start()
 
     def press(self, key):
-        if hasattr(key, 'char') and key.char.upper() in self.keys:
-            self.key_vector[self.keys.index(key.char.upper())] = 1
+        for x in range(len(self.key_vector)):
+            if hasattr(key, 'char') and key.char.upper() in self.keys:
+                self.key_vector[self.keys.index(key.char.upper())] = 1
 
     def release(self, key):
-        if hasattr(key, 'char') and key.char.upper() in self.keys:
-            self.key_vector[self.keys.index(key.char.upper())] = 0
+        for x in range(len(self.key_vector)):
+            if hasattr(key, 'char') and key.char.upper() in self.keys:
+                self.key_vector[self.keys.index(key.char.upper())] = 0
 
     def get_keys(self):
         return self.key_vector
@@ -55,7 +57,7 @@ while True:
         img = capture_img()
         keys = key_listener.get_keys()
         images.append(img)
-        key_states.append(keys)
+        key_states.append(keys.copy())
         if keys[4] == 1:
             name = f"episodes/ep_{str(time.time())}"
             np.savez(name + ".npz",
@@ -63,4 +65,4 @@ while True:
                      keys=np.array(key_states, dtype=np.uint8))
             print(name + " saved!")
             key_listener.reset_keys()
-    time.sleep(0.01)
+    time.sleep(1/45)
